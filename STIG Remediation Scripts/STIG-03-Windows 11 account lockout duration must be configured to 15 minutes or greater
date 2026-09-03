@@ -61,4 +61,4 @@ else {
 # EXPECTED RESULT
 # ============================================================
 
-<# PASS - Registry policy processing is enabled #>
+<# Lockout duration (minutes): 15 #>
