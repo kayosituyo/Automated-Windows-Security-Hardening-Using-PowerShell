@@ -1,1 +1,81 @@
+<#
+.SYNOPSIS
+    This PowerShell script remediates [Downloading print driver packages over HTTP must be prevented].
 
+.DESCRIPTION
+ Some features may communicate with the vendor, sending system information or downloading data or components for the feature.
+ Turning off this capability will prevent potentially sensitive information from being sent outside the enterprise and uncontrolled updates to the system.
+ This setting prevents the computer from downloading print driver packages over HTTP.
+ [STIG-ID: WN11-CC-000100].
+
+.NOTES
+    Author          : Kayode Osituyo
+    LinkedIn        : linkedin.com/in/kayode-osituyo-49041a35a
+    GitHub          : github.com/kayosituyo
+    Date Created    : 2026-09-01
+    Last Modified   : 2026-09-03
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : STIG-ID: WN11-CC-000100
+    Documentation   : https://stigaview.com/products/win11/v2r3/WN11-CC-000100/
+
+.TESTED ON
+    Date(s) Tested  : 2026-09-03
+    Tested By       : Kayode Osituyo
+    Systems Tested  : Windows 11
+    PowerShell Ver. : 5.1
+
+.USAGE
+    Run this script from an elevated PowerShell session.
+#>
+
+# ============================================================
+# STIG REMEDIATION
+# ============================================================
+
+$RegistryPath = "HKLM:\Software\Policies\Microsoft\Windows NT\Printers"
+
+# Create registry path if it does not exist
+if (-not (Test-Path $RegistryPath)) {
+    New-Item -Path $RegistryPath -Force | Out-Null
+}
+
+# Enable "Turn off downloading of print drivers over HTTP"
+Set-ItemProperty `
+    -Path $RegistryPath `
+    -Name "DisableHTTPPrinting" `
+    -Value 1 `
+    -Type DWord `
+    -Force
+
+Write-Host "Policy enabled: Downloading of print drivers over HTTP is disabled." `
+    -ForegroundColor Green
+
+# ============================================================
+# VERIFICATION
+# ============================================================
+
+Write-Host "`nVerification Results:" -ForegroundColor Cyan
+
+$result = Get-ItemProperty `
+    -Path $RegistryPath `
+    -Name "DisableHTTPPrinting" `
+    -ErrorAction SilentlyContinue
+
+if ($result.DisableHTTPPrinting -eq 1) {
+    Write-Host "PASS - Print driver downloads over HTTP are disabled." `
+        -ForegroundColor Green
+}
+else {
+    Write-Host "FAIL - Policy is not configured correctly." `
+        -ForegroundColor Red
+}
+ 
+
+
+# ============================================================
+# EXPECTED RESULT
+# ============================================================
+
+ <# PASS - Print driver downloads over HTTP are disabled #>
