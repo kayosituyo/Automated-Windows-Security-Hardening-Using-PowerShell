@@ -1,1 +1,43 @@
 
+<#
+.SYNOPSIS
+    This PowerShell script remediates [Group Policy objects must be reprocessed even if they have not changed].
+
+.DESCRIPTION
+    Enabling this setting and then selecting the 'Process even if the Group Policy objects have not changed' option ensures that the policies will be reprocessed even if none have been changed.
+    This way, any unauthorized changes are forced to match the domain-based group policy settings again.
+    [STIG-ID: WN11-CC-000090].
+
+.NOTES
+    Author          : Kayode Osituyo
+    LinkedIn        : linkedin.com/in/kayode-osituyo-49041a35a
+    GitHub          : github.com/kayosituyo
+    Date Created    : 2026-09-01
+    Last Modified   : 2026-09-02
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : [STIG-ID: WN11-CC-000090]
+    Documentation   : [https://stigaview.com/products/win11/v2r3/WN11-CC-000090/]
+
+.TESTED ON
+    Date(s) Tested  : 2026-09-02
+    Tested By       : Kayode Osituyo
+    Systems Tested  : [Windows version]
+    PowerShell Ver. : [PowerShell version]
+
+.USAGE
+    Run this script from an elevated PowerShell session.
+#>
+
+# ============================================================
+# STIG REMEDIATION
+# ============================================================
+
+
+
+
+# ============================================================
+# VERIFICATION
+# ============================================================
+
