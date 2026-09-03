@@ -1,0 +1,42 @@
+<#
+.SYNOPSIS
+    This PowerShell script remediates [The number of allowed bad logon attempts must be configured to three or less].
+
+.DESCRIPTION
+   The account lockout feature, when enabled, prevents brute-force password attacks on the system. 
+   The higher this value is, the less effective the account lockout feature will be in protecting the local system. 
+   The number of bad logon attempts must be reasonably small to minimize the possibility of a successful password attack, while allowing for honest errors made during a normal user logon.
+   [STIG-ID: WN11-AC-000010].
+
+.NOTES
+    Author          : Kayode Osituyo
+    LinkedIn        : linkedin.com/in/kayode-osituyo-49041a35a
+    GitHub          : github.com/kayosituyo
+    Date Created    : 2026-09-01
+    Last Modified   : 2026-09-02
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : [STIG-ID: WN11-AC-000010]
+    Documentation   : [https://stigaview.com/products/win11/v2r3/WN11-AC-000010/]
+
+.TESTED ON
+    Date(s) Tested  : 2026-09-02
+    Tested By       : Kayode Osituyo
+    Systems Tested  : [Windows version]
+    PowerShell Ver. : [PowerShell version]
+
+.USAGE
+    Run this script from an elevated PowerShell session.
+#>
+
+# ============================================================
+# STIG REMEDIATION
+# ============================================================
+
+
+
+
+# ============================================================
+# VERIFICATION
+# ============================================================
