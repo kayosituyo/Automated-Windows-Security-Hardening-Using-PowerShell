@@ -55,3 +55,10 @@ if ($result -match "3") {
 else {
     Write-Host "FAIL - Account Lockout Threshold is not configured correctly." -ForegroundColor Red
 }
+
+
+# ============================================================
+# EXPECTED RESULT
+# ============================================================
+
+<# PASS - Account Lockout Threshold is configured for 3 attempts #>
