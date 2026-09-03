@@ -1,1 +1,81 @@
+<#
+.SYNOPSIS
+    This PowerShell script remediates [Internet Explorer must be disabled for Windows 11].
 
+.DESCRIPTION
+ Internet Explorer 11 (IE11) is not supported on Windows 11 semi-annual channel.
+  [STIG-ID: WN11-CC-000391].
+
+.NOTES
+    Author          : Kayode Osituyo
+    LinkedIn        : linkedin.com/in/kayode-osituyo-49041a35a
+    GitHub          : github.com/kayosituyo
+    Date Created    : 2026-09-01
+    Last Modified   : 2026-09-03
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : STIG-ID: WN11-CC-000391
+    Documentation   : https://stigaview.com/products/win11/v2r3/WN11-CC-000391/
+
+.TESTED ON
+    Date(s) Tested  : 2026-09-03
+    Tested By       : Kayode Osituyo
+    Systems Tested  : Windows 11
+    PowerShell Ver. : 5.1
+
+.USAGE
+    Run this script from an elevated PowerShell session.
+#>
+
+# ============================================================
+# STIG REMEDIATION
+# ============================================================
+
+$RegistryPath = "HKLM:\Software\Policies\Microsoft\Internet Explorer\Main"
+
+# Create registry path if it does not exist
+if (-not (Test-Path $RegistryPath)) {
+    New-Item -Path $RegistryPath -Force | Out-Null
+}
+
+# Enable the policy and set the option to "Never"
+# 1 = Never
+Set-ItemProperty `
+    -Path $RegistryPath `
+    -Name "NotifyDisableIEOptions" `
+    -Value 1 `
+    -Type DWord `
+    -Force
+
+Write-Host "PASS - Internet Explorer 11 standalone browser has been disabled." `
+    -ForegroundColor Green
+
+# ============================================================
+# VERIFICATION
+# ============================================================
+
+Write-Host "`nVerification Results:" -ForegroundColor Cyan
+
+$result = Get-ItemProperty `
+    -Path $RegistryPath `
+    -Name "NotifyDisableIEOptions" `
+    -ErrorAction SilentlyContinue
+
+if ($result.NotifyDisableIEOptions -eq 1) {
+    Write-Host "PASS - IE11 standalone browser policy is configured to 'Never'." `
+        -ForegroundColor Green
+}
+else {
+    Write-Host "FAIL - IE11 policy is not configured correctly." `
+        -ForegroundColor Red
+}
+
+ 
+
+
+# ============================================================
+# EXPECTED RESULT
+# ============================================================
+
+ <# PASS - IE11 standalone browser policy is configured to 'Never' #>
