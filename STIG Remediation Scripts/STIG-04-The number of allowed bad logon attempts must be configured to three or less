@@ -17,14 +17,14 @@
     Version         : 1.0
     CVEs            : N/A
     Plugin IDs      : N/A
-    STIG-ID         : [STIG-ID: WN11-AC-000010]
-    Documentation   : [https://stigaview.com/products/win11/v2r3/WN11-AC-000010/]
+    STIG-ID         : STIG-ID: WN11-AC-000010
+    Documentation   : https://stigaview.com/products/win11/v2r3/WN11-AC-000010/
 
 .TESTED ON
     Date(s) Tested  : 2026-09-02
     Tested By       : Kayode Osituyo
-    Systems Tested  : [Windows version]
-    PowerShell Ver. : [PowerShell version]
+    Systems Tested  : Windows 11
+    PowerShell Ver. : 5.1
 
 .USAGE
     Run this script from an elevated PowerShell session.
@@ -34,9 +34,24 @@
 # STIG REMEDIATION
 # ============================================================
 
+# Configure Account Lockout Threshold to 3 attempts
+net accounts /lockoutthreshold:3
 
-
+Write-Host "Account Lockout Threshold set to 3 attempts." -ForegroundColor Green
 
 # ============================================================
 # VERIFICATION
 # ============================================================
+
+Write-Host "`nVerification Results:" -ForegroundColor Cyan
+
+$result = net accounts | Select-String "Lockout threshold"
+
+Write-Host $result
+
+if ($result -match "3") {
+    Write-Host "PASS - Account Lockout Threshold is configured for 3 attempts." -ForegroundColor Green
+}
+else {
+    Write-Host "FAIL - Account Lockout Threshold is not configured correctly." -ForegroundColor Red
+}
