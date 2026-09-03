@@ -1,1 +1,83 @@
 
+<#
+.SYNOPSIS
+    This PowerShell script remediates [The Windows Installer feature 'Always install with elevated privileges' must be disabled].
+
+.DESCRIPTION
+    Standard user accounts must not be granted elevated privileges. 
+    Enabling Windows Installer to elevate privileges when installing applications can allow malicious persons and applications to gain full control of a system. 
+   [STIG-ID WN11-CC-000315].
+
+.NOTES
+    Author          : Kayode Osituyo
+    LinkedIn        : linkedin.com/in/kayode-osituyo-49041a35a
+    GitHub          : github.com/kayosituyo
+    Date Created    : 2026-09-01
+    Last Modified   : 2026-09-02
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : [STIG-ID: WN11-CC-000315]
+    Documentation   : [https://preview.stigaview.com/products/win11/v2r1/WN11-CC-000315/]
+
+.TESTED ON
+    Date(s) Tested  : 2026-09-02
+    Tested By       : Kayode Osituyo
+    Systems Tested  : [Windows version]
+    PowerShell Ver. : [PowerShell version]
+
+.USAGE
+    Run this script from an elevated PowerShell session.
+#>
+
+# ============================================================
+# STIG REMEDIATION
+# ============================================================
+
+$paths = @(
+    "HKLM:\Software\Policies\Microsoft\Windows\Installer",
+    "HKCU:\Software\Policies\Microsoft\Windows\Installer"
+)
+
+foreach ($path in $paths) {
+
+    # Create the registry path if it does not exist
+    if (-not (Test-Path $path)) {
+        New-Item -Path $path -Force | Out-Null
+    }
+
+    # Disable AlwaysInstallElevated
+    Set-ItemProperty `
+        -Path $path `
+        -Name "AlwaysInstallElevated" `
+        -Value 0 `
+        -Type DWord `
+        -Force
+
+    Write-Host "Remediated: $path" -ForegroundColor Green
+}
+
+
+# ============================================================
+# VERIFICATION
+# ============================================================
+
+Write-Host "`nVerification Results:" -ForegroundColor Cyan
+
+foreach ($path in $paths) {
+
+    $result = Get-ItemProperty `
+        -Path $path `
+        -Name "AlwaysInstallElevated" `
+        -ErrorAction SilentlyContinue
+
+    if ($result.AlwaysInstallElevated -eq 0) {
+        Write-Host "PASS - AlwaysInstallElevated is disabled: $path" `
+            -ForegroundColor Green
+    }
+    else {
+        Write-Host "FAIL - AlwaysInstallElevated is not disabled: $path" `
+            -ForegroundColor Red
+    }
+}
+
