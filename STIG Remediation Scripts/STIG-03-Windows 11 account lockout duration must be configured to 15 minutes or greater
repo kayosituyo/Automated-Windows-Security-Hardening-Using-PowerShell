@@ -34,9 +34,24 @@
 # STIG REMEDIATION
 # ============================================================
 
+# Configure Account Lockout Duration to 15 minutes
+net accounts /lockoutduration:15
 
-
+Write-Host "Account Lockout Duration set to 15 minutes." -ForegroundColor Green
 
 # ============================================================
 # VERIFICATION
 # ============================================================
+
+Write-Host "`nVerification Results:" -ForegroundColor Cyan
+
+$result = net accounts | Select-String "Lockout duration"
+
+Write-Host $result
+
+if ($result -match "15") {
+    Write-Host "PASS - Account Lockout Duration is configured for 15 minutes." -ForegroundColor Green
+}
+else {
+    Write-Host "FAIL - Account Lockout Duration is not configured correctly." -ForegroundColor Red
+}
